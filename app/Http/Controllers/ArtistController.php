@@ -25,7 +25,7 @@ class ArtistController extends Controller
      */
     public function create()
     {
-        //
+        return view('artist.create');
     }
 
     /**
@@ -33,7 +33,19 @@ class ArtistController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        // 1. Vérifier les données
+	$validated = $request->validate([
+		'firstname' =>'required|max:60',
+		'lastname' => 'required|max:60',
+	]);
+	
+	//2. Créer le nouvel artiste en base
+
+	$artist = Artist::create($validated);
+
+	// 3. REdiriger vers sa fiche
+
+	return redirect()->route('artist.show', $artist->id);
     }
 
     /**
@@ -86,6 +98,11 @@ class ArtistController extends Controller
      */
     public function destroy(string $id)
     {
-        //
+        $artist = Artist::find($id);
+
+        if($artist){
+            $artist->delete();
+        }
+        return redirect()->route('artist.index');
     }
 }
