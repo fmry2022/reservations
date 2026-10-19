@@ -53,5 +53,21 @@ class UserSeeder extends Seeder
 
         // Insérer dans la table
         DB::table('users')->insert($users);
+
+        // 1 admin
+        User::factory()->create([
+            'login' => 'fred',
+            'firstname' => 'Fred',
+            'lastname' => 'Sull',
+            'email' => 'fred@sull.com',
+            'password' => Hash::make('12345678'),
+            'langue' => 'fr',
+            'role' => 'admin',
+        ]);
+
+        // 20 membres, 5 presse, 3 affiliés
+        User::factory(20)->create(['role' => 'member']);
+        User::factory(5)->create(['role' => 'press']);
+        User::factory(3)->create(['role' => 'affiliate']);
     }
 }
